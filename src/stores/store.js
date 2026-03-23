@@ -23,7 +23,9 @@ export const useRRStore = defineStore('RRStore', {
   //
   state: () => ({
     anwendungen: [],
-    listen     : []
+    listen     : [],
+    notizen    : []
+
   }),
 
   //
@@ -85,12 +87,26 @@ export const useRRStore = defineStore('RRStore', {
   },
 
 
+
   /**
-  * Lade das Array listen
+  * Lade das Array notizen
   * @param {array} DB-Rows
   * @return ()
   */
-
+  lade_notizen (arg1) {
+    console.log("* lade_notizen => Eintritt ");    
+    let list = [];    
+    arg1.forEach(row => {
+      let id = row.Id;                // ein Punkt ist im JSON-Objekt nicht zulässig
+      let name = row.Name;            // deshalb diese neue Zuweisung
+      let zeile = { id, name };       // wird autom. umgewandelt in {id: 'ii', name:'xxxx'}
+      //console.log('zeile: ', zeile); 
+      //anw.push(zeile); 
+      this.notizen.push(zeile);          
+    });    
+    console.log("   notizen:  ",  this.notizen);
+    console.log("* Array notizen im Store geladen. ");
+  },
 
 
 
