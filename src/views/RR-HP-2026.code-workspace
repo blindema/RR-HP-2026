@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../../RR-Server"
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"ssh": "Disabled",
+				"previewLimit": 50,
+				"server": "192.168.178.100",
+				"port": 3306,
+				"driver": "MariaDB",
+				"name": "MariaDB Raspi4 Docker",
+				"username": "blindema",
+				"database": "RRHPDB"
+			}
+		]
+	}
+}

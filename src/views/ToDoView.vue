@@ -261,6 +261,7 @@ let prioColor = { Low    : '#eee;',    // Json-Objekt zur Umrechnung der Priorit
       method: 'POST',
       url: fullUrl, 
       auth: { username: config.username, password: config.password },  // angepasst copilot 19.03.2026
+      // entfernen; user und pw nur im Backend, nicht in Frontend
       data: { fkt       : 'db-upd',
               id        : rowId,
               bez       : row_Bezeichnung.value,
