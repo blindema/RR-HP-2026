@@ -33,7 +33,7 @@
     
      <ul>
       <li v-for="(row, ix) in notizen" :key="ix" :id="'Row' + ix" class="card">
-        <Router-Link :to="`/Notizen/${ix + 1}`" href="" class="card-link">
+        <Router-Link :to="`/Notiz/${ix + 1}`" href="" class="card-link">
           <div class="card-content">
             <div class="flex-item-pic">
               <img :src="previewImages[ix] || 'src/assets/' + getImageForRow(ix)" alt="Notiz Bild">
@@ -140,10 +140,11 @@ onMounted(() => {
         notizen.value.forEach((row, ix) => {
           if (row.Inhalt) {
             const element = document.getElementById(`preview-${ix}`);
-            if (element) {
-              html2canvas(element, { width: 200, height: 150 }).then(canvas => {
-                previewImages.value[ix] = canvas.toDataURL();
-              }).catch(err => {
+            if (element) { html2canvas(element, { width: 200, height: 150 
+              })
+              .then(canvas => { previewImages.value[ix] = canvas.toDataURL();
+              })
+              .catch(err => {
                 console.error('html2canvas error:', err);
               });
             }
