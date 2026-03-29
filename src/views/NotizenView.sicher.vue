@@ -6,7 +6,7 @@
   <main>
 
       <div>       
-        <button  class="btnHome" title="Home">
+        <button @click="del_row(ix)" class="btnHome" title="Home">
           <Router-Link :to="`/`" href="">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
               <path
@@ -16,7 +16,7 @@
         </button>
        
        
-        <button  class="btnBack" title="Back">
+        <button @click="del_row(ix)" class="btnBack" title="Back">
           <Router-Link :to="`/Notizen/`">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd"
@@ -27,24 +27,18 @@
       </div>
 
     <h2>Notizen Übersicht</h2>
-    
-    <!-- Hidden divs for HTML previews -->
-    <div v-for="(row, ix) in notizen" :key="'preview-' + ix" :id="'preview-' + ix" v-html="row.Inhalt" class="preview-hidden"></div>
-    
      <ul>
       <li v-for="(row, ix) in notizen" :key="ix" :id="'Row' + ix" class="card">
-        <Router-Link :to="`/Notizen/${ix + 1}`" href="" class="card-link">
-          <div class="card-content">
-            <div class="flex-item-pic">
-              <img :src="previewImages[ix] || 'src/assets/' + getImageForRow(ix)" alt="Notiz Bild">
-            </div>
-            <div class="flex-item-data">
-              <h3 class="item-title">{{ row.Titel }}</h3>
-              <p class="item-date">Aktualisiert: {{ dat_kurz2(row.Updated) }}</p>
-              <p class="item-date">Erstellt: {{ dat_kurz2(row.Created) }}</p>
-            </div>
-          </div>
-        </Router-Link>
+        <div id="pic" class="flex-item-pic">
+          <Router-Link :to="`/Notizen/${ix + 1}`" href="">
+           <img :src="'src/assets/' + buch.png"> 
+            </Router-Link>
+        </div>
+        <div id="data" class="flex-item-data">
+        <p id="item-data-titel"> {{ row.Titel }} </p>
+        <p> Update: {{ dat_kurz2(row.textUpdated) }} </p> 
+        <p> Items : {{ row.Anz }} </p> 
+        </div>
       </li>
     </ul>
 
@@ -54,10 +48,9 @@
 
 <script setup>
 // Imports ,
-import { onMounted, onBeforeUnmount, onBeforeMount, nextTick} from "vue";
+import { onMounted, onBeforeUnmount, onBeforeMount} from "vue";
 import { ref, watch, unref, toRaw } from "vue";
 import axios from "axios";
-import html2canvas from 'html2canvas';
 import chevron from "../assets/chevron-double-down.svg";
 
 // Imports from Router
@@ -87,17 +80,6 @@ import * as config from "../dbCredentials.js";
 let notizen = ref({});                                // Inhalt vom Eingabefeld
 let notizTitel = ref("");                        // Variable für den Titel
 
-// Array of images for notes
-const noteImages = ['buch.png', 'task.png', 'shopping.jpg', 'oma2.jpg'];
-
-// Function to get image for row
-const getImageForRow = (ix) => {
-  return noteImages[ix % noteImages.length];
-};
-
-// Preview images for HTML content
-let previewImages = ref([]);
-
 
 //Datensatz Notiz
 //let rowId = 2; // Id
@@ -110,6 +92,45 @@ let previewImages = ref([]);
 //********************************** */
 //*  Funktionen                      */
 //********************************** */
+
+/** Function
+ * Sätze aus der DB (Tabelle RRHP_Notizen_T) lesen
+ * @param {}
+ * @returns {}
+ */
+function read_notizen() {
+  const endpoint = "rrhp/modul-notizen";
+  const queryParam = ""; //zB ?fkt=1
+  const fullUrl = `${config.protocol}://${config.host}:${config.port}/${config.path}/${endpoint}${queryParam}`;
+
+  console.log(`*** read_Notizen => Eintritt `);
+
+  axios({
+    method: "GET",
+    url: fullUrl
+  })
+    .then(function (response) {
+      
+      console.log("Response: ", response);
+      //notizen.value = response.data;                          // Datensätze in Variable speichern
+      console.log(`Saetze gelesen: ${response.data.length}`)
+      console.log("Rows: ", response.data); 
+      myRRStore.lade_notizen(response.data);          // Laden des Array myRRStore.notizen rows = response.data  
+      notizen.value = response.data;
+
+      console.log("Geladener Inhalt:", rows);
+      console.log("Typ:", typeof rows);
+      })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });  
+    console.log(`*** read_Notizen (onMounted) => Austritt `);
+}
+
 
 
 /** Function
@@ -130,26 +151,17 @@ onMounted(() => {
       
       console.log("Response: ", response);
       //notizen.value = response.data;                            // Datensätze in Variable speichern
-      console.log(`Saetze aus DB  gelesen: ${response.data.length}`)
+      console.log(`Saetze gelesen: ${response.data.length}`)
       console.log("Rows: ", response.data);   
-      myRRStore.lade_notizen(response.data);          // Laden des Array myRRStore.notizen rows = response.data  
-      notizen.value = response.data;
-      
-      // Generate previews after data is loaded
-      nextTick(() => {
-        notizen.value.forEach((row, ix) => {
-          if (row.Inhalt) {
-            const element = document.getElementById(`preview-${ix}`);
-            if (element) {
-              html2canvas(element, { width: 200, height: 150 }).then(canvas => {
-                previewImages.value[ix] = canvas.toDataURL();
-              }).catch(err => {
-                console.error('html2canvas error:', err);
-              });
-            }
-          }
-        });
-      });
+        myRRStore.lade_notizen(response.data);          // Laden des Array myRRStore.notizen rows = response.data  
+      notizen.value = response.data;       
+     // textUpdated = response.data[0].Updated;                      // Datum der letzten Änderung 
+      //editorContent.value = response.data[0].Inhalt;               // Datensatz 0 an den Editor übergeben
+      //notizTitel = response.data[0].Titel;                         // .value wird nicht benötigt     
+     
+      /* Da ich nur einen Datensatz habe, kann ich diesen auch als einzelnes JSON-Objekt speichern
+      let test1 = {};  test1 = notizen.value[0];  console.log  ("test1: ");  console.log  (test1.Titel);
+      */
     })
     .catch(function (error) {     
       console.log(error);                                                // handle error
@@ -161,6 +173,20 @@ onMounted(() => {
     console.log(`*** read_Notizen (onMounted) => Austritt `);
   
 });
+
+
+
+/** Function
+ * Fkt. wird ausgeführt, bevor die Page von Vue entladen wird
+ */
+onBeforeUnmount(() => {
+  console.log(`*** Page before unmount: Notiz`);
+  // Die folgende Zeile ist nur zeitweise bis eine Notizen-Übersicht programmiert wird.
+  if (isWaitingForWrite == true) {
+    write_notizen();  // Speichern der Daten in die DB
+  }
+});
+
 
 </script>
 
@@ -195,82 +221,51 @@ main {
 
 h2 {
   text-align: center;
-  margin-bottom: 2em;
-  font-size: 2em;
-  color: #333;
 }
-
-ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card-link {
-  text-decoration: none;
-  color: inherit;
+textarea {
   display: block;
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
 }
 
-.card-content {
+.classKopf {
   display: flex;
-  align-items: center;
-  padding: 1em;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+.classTitel {
+  width: 20em;
+  border-radius: 0.75em;
+  /*justify-content: flex-start; */
+}
+/*                  */
+.classButton {
+  width: 5.5em;
+  border-radius: 0.75em;
+  color:green;
+  border: 1px;
+  cursor: pointer;
+  
+  /*justify-content: flex-end; */
 }
 
-.flex-item-pic {
-  flex-shrink: 0;
-  margin-right: 1em;
+.classButton:hover {
+  color:rgb(2, 189, 2);
 }
 
-.flex-item-pic img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
+.ql-toolbar.ql-snow {
+  border-radius: 0.5em;
 }
 
-.flex-item-data {
-  flex: 1;
+.ql-container.ql-snow {
+  border: 0px;
 }
 
-.item-title {
-  margin: 0 0 0.5em 0;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #2c3e50;
+.classInfos {
+font-size: small;
 }
-
-.item-date {
-  margin: 0.2em 0;
-  font-size: 0.9em;
-  color: #7f8c8d;
-}
-
-.preview-hidden {
-  position: absolute;
-  left: -9999px;
-  top: -9999px;
-  width: 200px;
-  height: 150px;
-  overflow: hidden;
-  background: white;
-}
+/*                  */
 
 /*********************************************************************/
 /* Media Query  (immer am Ende plazieren)                                                     */

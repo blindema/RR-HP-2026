@@ -88,25 +88,36 @@ export const useRRStore = defineStore('RRStore', {
 
 
 
-  /**
-  * Lade das Array notizen
-  * @param {array} DB-Rows
-  * @return ()
-  */
-  lade_notizen (arg1) {
-    console.log("* lade_notizen => Eintritt ");    
-    let list = [];    
-    arg1.forEach(row => {
-      let id = row.Id;                // ein Punkt ist im JSON-Objekt nicht zulässig
-      let name = row.Name;            // deshalb diese neue Zuweisung
-      let zeile = { id, name };       // wird autom. umgewandelt in {id: 'ii', name:'xxxx'}
-      //console.log('zeile: ', zeile); 
-      //anw.push(zeile); 
-      this.notizen.push(zeile);          
-    });    
-    console.log("   notizen:  ",  this.notizen);
-    console.log("* Array notizen im Store geladen. ");
-  },
+/**
+* Lade das Array notizen
+* @param {array} DB-Rows
+* @return ()
+*
+* Datensatz Notiz
+*  let rowId = 2;                 // Id
+*  let titel = "";                // Titel
+*  let inhalt = "";               // Inhalt
+*  let textFormat = "html";       // Textformat
+*  let textUpdated = ref("");     // Datum der letzten Änderung  
+*/
+lade_notizen(arg1) {
+  console.log("* lade_notizen => Eintritt ");
+  let list = [];
+  arg1.forEach(row => {
+    let id = row.Id;                  // ein Punkt ist im JSON-Objekt nicht zulässig
+    let beschreibung = row.Beschreibung;  // deshalb diese neue Zuweisung
+    let titel = row.Titel;            // deshalb diese neue Zuweisung
+    let inhalt = row.Inhalt;         
+    let format = row.Format;  
+    let created = row.Created;
+    let updated = row.Updated; 
+    let zeile = { id, beschreibung, titel, inhalt, format, created, updated }; // wird autom. umgewandelt in {id: 'ii', titel:'xxxx'}
+    //console.log('zeile: ', zeile); 
+    this.notizen.push(zeile);
+  });
+  console.log("   notizen:  ", this.notizen);
+  console.log("* Array notizen im Store geladen. ");
+},
 
 
 

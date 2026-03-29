@@ -1,0 +1,15 @@
+  <h2>Notizen Übersicht</h2>
+     <ul>
+      <li v-for="(row, ix) in notizen" :key="ix" :id="'Row' + ix" class="card">
+        <div id="pic" class="flex-item-pic">
+          <Router-Link :to="`/Notizen/${ix + 1}`" href="">
+           <img :src="'src/assets/' + 'buch.png'"> 
+            </Router-Link>
+        </div>
+        <div id="data" class="flex-item-data">
+        <p id="item-data-titel"> {{ row.Titel }} </p>
+        <p> Update: {{ dat_kurz2(row.Updated) }} </p> 
+        <p> Created: {{ dat_kurz2(row.Created) }} </p>
+        </div>
+      </li>
+    </ul>

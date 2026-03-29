@@ -5,7 +5,7 @@ import ListenView   from '../views/ListenView.vue'
 import ListView     from '../views/ListView.vue'
 import ToDoView     from '../views/ToDoView.vue'
 import RememberView from '../views/RememberView.vue'
-import NotizView    from '../views/NotizView.vue'
+import NotizenView  from '../views/NotizenView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,7 +43,7 @@ const router = createRouter({
     {
       path: '/Notizen',
       name: 'notizen',
-      component: NotizView            // Zeigt einen Notizblock an
+      component: NotizenView          // Übersicht der erstellten Notizen
     },
     {
       path: '/about',
