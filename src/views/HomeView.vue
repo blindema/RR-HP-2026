@@ -4,12 +4,14 @@
 <!------------------------------------------------------------------------------->
 <template>
   <main>
-    <h1>Verfügbare Module</h1>
+    <header>
+      <h1>Verfügbare Module</h1>
+    </header>
     <div class="cards">
-      <div v-for="(row, ix) in anwendungen_T" :key="ix" @click="router.push(`/${row.Name}`)" :id="'Row' + ix" class="card">           
-        <h3> {{ row.Name }} </h3>             
+      <div v-for="(row, ix) in anwendungen_T" :key="ix" @click="router.push(`/${row.Name}`)" :id="'Row' + ix" class="card">
+        <h3>{{ getIcon(row.Name) }} {{ row.Name }}</h3>
       </div>
-    </div>    
+    </div>
   </main>
 </template> 
 
@@ -29,6 +31,19 @@ import * as config from '../dbCredentials.js';
 const router = useRouter();
 
 let anwendungen_T = ref([]);        // Array für die Anwendungen (Sätze aus der DB gelesen und sortiert)
+
+// Funktion, um Icons basierend auf dem Modulnamen zu bekommen
+function getIcon(name) {
+  const icons = {
+    'Notizen': '📝',
+    'Listen': '📋',
+    'ToDo': '✅',
+    'System': '⚙️',
+    'About': 'ℹ️',
+    'Remember': '🧠'
+  };
+  return icons[name] || '📱'; // Standard-Icon, wenn kein spezifisches gefunden
+}
 
 
 
@@ -67,36 +82,76 @@ onMounted( () => {
 
 <style scoped>
 main {
-  /* background-color: #eee; */
   margin-left: auto;
   margin-right: auto;
   width: 95%;
   height: 100vh; 
-  background-color: #f6f6f6; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: #fff;
 }
 h1 {
   text-align: center;
-  color: blue;
+  font-size: 3rem;
+  font-weight: 300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0;
 }
 .cards {  /* Ist eine Flexbox und enthält die 3 Aufgaben (.card) */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around ;
-  margin-top: 1em;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2em;
 }
 /* der Text (hier eine h3) wird am besten formatiert, wenn man .card auch als Flexbox deklariert */
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-around ;
-  width: 10em;  
-  height: 3em;
-  margin: 1em;
-  text-align: center;  
-  color: darkblue;
-  background-color:azure;  
+  justify-content: center;
+  align-items: center;
+  width: 200px;  
+  height: 120px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  transition: all 0.3s ease;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    width: 100%;
+    padding: 10px;
+  }
+  h1 {
+    font-size: 2.5rem;
+  }
+  .cards {
+    gap: 15px;
+  }
+  .card {
+    width: 150px;
+    height: 100px;
+  }
 }
 
 </style>
