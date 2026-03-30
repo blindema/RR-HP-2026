@@ -4,55 +4,51 @@
 <!------------------------------------------------------------------------------->
 <template>
   <main>
-
-    <div>
-      <button @click="del_row(ix)" class="btnHome" title="Home">
-        <Router-Link :to="`/`" href="">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path
-              d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
-          </svg>
-        </Router-Link>
-      </button>
-
-
-      <button @click="del_row(ix)" class="btnBack" title="Back">
-          <Router-Link :to="`/Notizen/`">
+    <header class="page-header">
+      <div class="nav-buttons">
+        <button @click="del_row(ix)" class="btnHome" title="Home">
+          <Router-Link :to="`/`" href="">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+              <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
             </svg>
           </Router-Link>
-        </button>       
-    </div>
+        </button>
 
-    <header>
-      <h3>System</h3>
+        <button @click="del_row(ix)" class="btnBack" title="Back">
+          <Router-Link :to="`/Notizen/`">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+          </Router-Link>
+        </button>
+      </div>
+      <h3>System Dashboard</h3>
     </header>
 
     <article class="grid-layout">
       <section class="box box-1">
-        <b>Termine</b>
+        <b>📅 Termine</b>
         <Calendar/>
       </section>
       <section class="box box-2">
-        <b>Box 2</b>
+        <b>📊 Box 2</b>
+        <p>Platzhalter für weitere Informationen</p>
       </section>
       <section class="box box-3">
-        <b>Temperaturen</b>
+        <b>🌡️ Temperaturen</b>
         <TemperatureForecast/>
       </section>
       <section class="box box-4">
-        <b>Wetter</b>
-        <p>Außentemperatur: {{ Math.round(aTemp) }} °C</p>  
-        <p>Temperatur GH: {{ Math.round(aTempGHaus) }} °C</p>     
-        <p>Temperatur AZ: {{ Math.round(aTempAZ) }} °C</p>     
+        <b>🌤️ Wetter</b>
+        <p>Außentemperatur: {{ Math.round(aTemp) }} °C</p>
+        <p>Temperatur GH: {{ Math.round(aTempGHaus) }} °C</p>
+        <p>Temperatur AZ: {{ Math.round(aTempAZ) }} °C</p>
       </section>
       <section class="box box-5">
-        <b>Abfall</b>
+        <b>🗑️ Abfall</b>
+        <p>Informationen zu Abfallterminen</p>
       </section>
     </article>
-
   </main>
 </template>
 
@@ -159,67 +155,89 @@ onBeforeUnmount(() => {
 /*  Page für den System-View  */
 
 main {
-  /* background-color: #eee; */
   margin-left: auto;
   margin-right: auto;
   width: 95%;
-  height: 100vh; 
-  background-color: #fafafa; 
-  }
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: #fff;
+}
 
-.btnHome, .btnBack{
-  border: 0;
-  background-color: #f6f6f6; 
-  padding: 0 20px 0 20px;
+.btnHome, .btnBack {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 50px;
+  margin: 10px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btnHome:hover, .btnBack:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .svg-icon {
   width: 1.2em;
-  height: 1.2em;   
+  height: 1.2em;
 }
 
 .svg-icon path {
-  fill: #000;
+  fill: #fff;
 }
 
 *,
 ::before,
 ::after {
-	box-sizing: border-box
-}
-
-h1 {
-	border-radius: 0 .5em .5em;
-	border: thin solid #d5d5d5;
-	padding: .5em;
-	margin: .5em auto;
+  box-sizing: border-box;
 }
 
 h3 {
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-article{
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+article {
   min-height: 100%;
   display: flex;
   justify-content: center;
-} 
-
+}
 
 /* Desktop-Layout */
 .grid-layout {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: repeat(4, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   padding: 1rem;
   height: 100%;
-  min-height: 400px; /* oder was du brauchst */
+  min-height: 400px;
 }
 
 /* Box-Zuweisung */
 .box-1 {
-  grid-row: 1 / 5; /* nimmt alle 4 Zeilen ein */
+  grid-row: 1 / 5;
   grid-column: 1;
 }
 
@@ -245,19 +263,33 @@ article{
 
 /* Box-Styling */
 .box {
-  background-color: #f0f0f0;
-  padding: 1rem;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  justify-content:flex-start;
+  justify-content: flex-start;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.box b {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #667eea;
 }
 
 /* Responsive für Handy */
 @media (max-width: 768px) {
-   
- .main {
+  main {
     width: 100%;
+    padding: 10px;
   }
   .grid-layout {
     grid-template-columns: 1fr;
@@ -269,17 +301,18 @@ article{
     min-height: 120px;
     width: 100%;
   }
+  h3 {
+    font-size: 2rem;
+  }
 }
 
-
-/*                  */
-
-/*********************************************************************/
-/* Media Query  (immer am Ende plazieren)                                                     */
-/*********************************************************************/
-
-/* For iPhones          : Breite=414px; Höhe=736 bei Viewport=1.0*/
-/* For Galaxy S24 Ultra : Breite=378px; Höhe=819 bei Viewport=1.0*/
+/* Media Query (immer am Ende platzieren) */
 @media only screen and (max-width: 750px) {
+  .grid-layout {
+    gap: 1rem;
+  }
+  .box {
+    padding: 1rem;
+  }
 }
 </style>

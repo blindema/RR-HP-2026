@@ -136,8 +136,12 @@ startCalendar();
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 4px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .date_time {
