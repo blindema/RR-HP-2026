@@ -87,7 +87,6 @@ export const useRRStore = defineStore('RRStore', {
   },
 
 
-
 /**
 * Lade das Array notizen
 * @param {array} DB-Rows
@@ -102,6 +101,7 @@ export const useRRStore = defineStore('RRStore', {
 */
 lade_notizen(arg1) {
   console.log("* lade_notizen => Eintritt ");
+  this.notizen = [];                  // Vor jedem Laden das Array leeren
   let list = [];
   arg1.forEach(row => {
     let id = row.Id;                  // ein Punkt ist im JSON-Objekt nicht zulässig

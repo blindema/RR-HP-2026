@@ -41,7 +41,7 @@ export const useData = () => {  // Start Definitions-Block
 
   // setzt den yyyy-mm-dd hh:mm:ss-Timestamp in 'tt.mm' um
   const dat_kurz2 = (arg) => {
-    console.log("ARG_kurz2: " +arg);
+    // console.log("ARG_kurz2: " +arg);
       return  arg.substring(8,10) + '.' + arg.substring(5,7) + '.';    // Tag und Monat
   };
 

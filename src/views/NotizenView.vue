@@ -28,6 +28,14 @@
 
     <h2>Notizen Übersicht</h2>
     
+    <div class="add-note-container">
+      <Router-Link :to="`/Notiz/0`" class="btn-add-note" title="Neue Notiz">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+      </Router-Link>
+    </div>
+    
     <!-- Hidden divs for HTML previews -->
     <div v-for="(row, ix) in notizen" :key="'preview-' + ix" :id="'preview-' + ix" v-html="row.Inhalt" class="preview-hidden"></div>
     
@@ -99,12 +107,16 @@ const getImageForRow = (ix) => {
 let previewImages = ref([]);
 
 
-//Datensatz Notiz
-//let rowId = 2; // Id
-//let titel = "";                        // Variable für den Titel
-//let inhalt = "";                                // Variable für den Inhalt
-//let textFormat = "html";                            // Variable für den Titel
-//let textUpdated = ref("");
+// RRHP_Notizen_T
+// (`Id`, `Titel`, `Inhalt`, `Format`, `Created`, `Updated`, `Beschreibung`, `Reserve`)
+//let rowId = 2;                        // variable für die Id
+//let titel = "";                       // Variable für den Titel
+//let inhalt = "";                      // Variable für den Inhalt
+//let format = "html";                  // Variable für das Format (zB html, markdown, text)
+//let created = ref("");                // Variable für das Erstellungsdatum
+//let updated = ref("");                // Variable für das Aktualisierungsdatum  
+//let beschreibung = "";                // Variable für die Beschreibung
+
 
 
 //********************************** */
@@ -196,9 +208,38 @@ main {
 
 h2 {
   text-align: center;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   font-size: 2em;
   color: #333;
+}
+
+.add-note-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5em;
+}
+
+.btn-add-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-add-note:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+}
+
+.btn-add-note:active {
+  transform: scale(0.95);
 }
 
 ul {
